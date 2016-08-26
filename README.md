@@ -41,18 +41,16 @@ Below is an example of videojs-contrib-eme options when only using FairPlay:
 {
   keySystems: {
     "com.apple.fps.1_0": {
-      getCertificate: (options, callback) => {
+      getCertificate: (emeOptions, callback) => {
         // request certificate
         // if err, callback(err)
         // if success, callback(null, certificate)
       },
-      getContentId: (initData) => {
+      getContentId: (emeOptions, initData) => {
         // return content ID
       },
-      getLicense: (options, callback) => {
-        let { contentId, webKitKeyMessage } = options;
-
-        // request key using options
+      getLicense: (emeOptions, contentId, keyMessage, callback) => {
+        // request key
         // if err, callback(err)
         // if success, callback(null, key) as arraybuffer
       }
@@ -104,15 +102,13 @@ systems:
     "org.w3.clearkey": {
       videoContentType: 'audio/webm; codecs="vorbis"',
       audioContentType: 'video/webm; codecs="vp9"',
-      getCertificate: (options, callback) => {
+      getCertificate: (emeOptions, callback) => {
         // request certificate
         // if err, callback(err)
         // if success, callback(null, certificate)
       },
-      getLicense: (options, callback) => {
-        let keyMessage = options.keyMessage;
-
-        // request license using mediaKeyMessage
+      getLicense: (emeOptions, keyMessage, callback) => {
+        // request license
         // if err, callback(err)
         // if success, callback(null, license)
       }
@@ -140,15 +136,13 @@ player.src({
     'org.w3.clearkey': {
       videoContentType: 'audio/webm; codecs="vorbis"',
       audioContentType: 'video/webm; codecs="vp9"',
-      getCertificate: (options, callback) => {
+      getCertificate: (emeOptions, callback) => {
         // request certificate
         // if err, callback(err)
         // if success, callback(null, certificate)
       },
-      getLicense: (options, callback) => {
-        let keyMessage = options.keyMessage;
-
-        // request license using mediaKeyMessage
+      getLicense: (emeOptions, keyMessage, callback) => {
+        // request license
         // if err, callback(err)
         // if success, callback(null, license)
       }
