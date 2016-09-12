@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>videojs-contrib-eme Demo</title>
+  <link href="/node_modules/video.js/dist/video-js.css" rel="stylesheet">
+</head>
+<body>
+  <div id="fixture"></div>
+
+  <form id="load-form">
+    <p><label> Source: <input id="source" type="url"></label></p>
+    <p><label> Certificate URI: <input id="certificateUri" type="url"></label></p>
+    <p><label> License URI: <input id="licenseUri" type="url"></label></p>
+    <button type="submit">Load</button>
+  </form>
+  <br>
+
+  <script src="/node_modules/video.js/dist/video.js"></script>
+  <script src="/dist/videojs-contrib-eme.js"></script>
+  <script>
+    (function(window, videojs) {
+      var createPlayer = function() {
+        // dispose of existing player
+        if (window.player) {
+          window.player.dispose();
+        }
+
+        // create video element in the dom
+        var video = document.createElement('video');
+        video.id = 'videojs-contrib-eme-player';
+        video.className = 'video-js vjs-default-skin';
+        video.setAttribute('controls', true);
+        video.setAttribute('height', 300);
+        video.setAttribute('width', 600);
+        document.querySelector('#fixture').appendChild(video);
+
+        var src = document.getElementById('source').value;
+        var certificateUri = document.getElementById('certificateUri').value;
+        var licenseUri = document.getElementById('licenseUri').value;
+
+        window.player = videojs(video.id, {
+          'plugins': {
+            'eme': {
+              'keySystems': {
+                'com.apple.fps.1_0': {
+                  'certificateUri': certificateUri,
+                  'licenseUri': licenseUri
+                }
+              }
+            }
+          }
+        });
+
+        window.player.src({
+          src: src,
+          type: 'application/x-mpegURL'
+        });
+      };
+
+      document.getElementById('load-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        createPlayer();
+        return false;
+      });
+    }(window, window.videojs));
+  </script>
+</body>
+</html>
